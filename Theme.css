@@ -72,8 +72,5 @@ li.a a:hover {
 	border-radius: 8pt;
 	padding: 8pt;
 	position: fixed;
+	bottom: 0;
 }
-
-#foot{
-	position: fixed;
-}	
