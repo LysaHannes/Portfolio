@@ -23,14 +23,14 @@
 		I will mention all of the YouTube videos I used in the write up, andI will also provide a list with links at the end.
 
 			<center>
-				<video width="320" height="240" controls>
+				<video width="500"  controls>
 					<source src="Hes_a_Pirate_good_1.mp4" type="video/mp4">
 					Your browser does not support the video tag.
 				</video>
 			</center>
 		
 			<center>
-				<video width="320" height="240" controls>
+				<video width="500"  controls>
 					<source src="Hes_a_Pirate_good_2.mp4" type="video/mp4">
 					Your browser does not support the video tag.
 				</video>
@@ -99,7 +99,7 @@
 		<section>
 			<center>
 				<br></br>			
-					<img src="camera.png" alt="camera angle">
+					<img src="camera.png" alt="camera angle" width="500">
 				<br></br>
 			</center>
 			I chose this camera angle because I wanted the viewer to see the piano from an angle where if you were sitting at the piano, this is what it would look like. 
@@ -118,7 +118,7 @@
 		<section>
 			<center>
 				<br></br>			
-					<img src="material.png" alt="material update">
+					<img src="material.png" alt="material update" width="500">
 				<br></br>
 			</center>
 			Adding color to the objects turned out a lot easier then I thought it would be. All you have to do is click on the object you want to color, go to the material
@@ -138,12 +138,46 @@
 	
 <p>
 </p>
-<h2></h2>
+<h2>Music, Animation and Rendering</h2>
 	<article>
 		<section>
-			<center>
-				
-			</center>
+			For the Music, I decided to use a piano version of the Pirates of the Caribbean Main theme song called “He’s a Pirate”. For the actual audio file, I used the 
+			youtube video “Pirates Of The Caribbean [Easy Piano Tutorial] (Synthesia/Sheet Music)” by Toms Mucenieks and used a website to turn the video into an MP3 file. 
+			I also used this video to help me know which notes the balls have to play to be correctly playing the piano to the music.
+			<br></br>
+			For the Animation I had already learned how to use keyframes from the YouTube video “Animation for Beginners! (Blender Tutorial)” by Ryan King Art when I first 
+			started researching how to use Blender. So my next step was to try to figure out how to add the audio file so I could sync my animation to the music. The video 
+			“Blender Tutorial: How to Add Music in Blender Video Editor” by EZ Tutorials helped me add in the audio so that I could listen to the audio while I was animating.
+			<br></br>
+			Next I animated the first 3 seconds of the video. There was an issue that I ran into with rotating the keys when they are played. Since when I modeled each key
+			the point of rotation was different for each one. The video from youtube called “How to Rotate Objects in BLENDER - Everything You NEED to Know” by Brandon's
+			Drawings helped me fix this problem. Turns out there was a way to rotate objects from each of the axes. So I just moved my whole model so the keys were along the
+			x axis so then I could rotate each key over the x axis when I want a key to be pressed.
+			<br></br>
+			Then came what I would say was the most challenging part of this project rendering correctly. I watched the youtube video “Export animation renders the RIGHT 
+			way in Blender!” by Brandon's Drawings. What I had to do was first make all the settings correct, then export each frame independently as a picture, then put 
+			them all together after. Blender said it was going to take 5 minutes to render each frame picture, and I thought that there was no way this was possible. So I 
+			did some research and turned out it makes it faster if you use your GPU to render the animation instead of your CPU. I used the video “How to enable GPU RENDERING 
+			in BLENDER” by Game Dev Academy to help me out with that. After following the steps in the video the render time lessened from 5 minutes per frame to 1 minute per 
+			frame. Since the song takes 2535 frames at 24fps, then the final render time when I’m done animating would be 1.5 days instead of 7 days.
+			<br></br>
+			So I went ahead and rendered the first 3 seconds of the animation (it took about one hour and 20 minutes). Then I ran into another problem. The animation editing 
+			mode was displaying the video a lot slower then when I actually put the frames all together in a video. So when I rendered it at 24 fps, it was playing too fast. 
+			I could render it at 17 fps, but then it appeared to be choppy. (Take a look at sample render 1)
+			<br></br>
+			I then increased the fps in the animation editing mode and thinking that would fix my problem, so I reanimated it at 60fps, and rendered all the frames (this time 
+			taking about 3 hours). It didn't work, it was still displaying the animation at 17 fps. The animation edit mode was organized by the number of frames, so I figured 
+			out how to organize it by the time stamp instead, thinking that should work. That didn't work either. So I gave up and decided that 17 fps would be fine. Later, when 
+			I was about 30 seconds into animating the keys timing, I realized that the keys had collision mode on from when I was trying to get the jelly to work. I disabled it, 
+			and all of a sudden when I played my animation in the editing mode the animation was playing faster. So my problem was that so many keys had collision mode on that it 
+			was slowing down the framerate in the animation edit mode. To make sure it would work, I rendered some of what I had animated, and it was finally running at 24 fps when 
+			I rendered it! (Take a look at sample render 2)
+			<br></br>
+			Now that I knew how to render the project and everything was running smoothly all I had left to do was finish animating. My process for animating started with animating 
+			the first couple of notes with the ball and keys as a proof of concept. After deciding that it had the look and feel I was aiming for I then animated just the key presses 
+			without the ball jumping from key to key. Once that was complete I animated the ball jumping from key to key. Then I waited about 1.5 days for the animation to render each 
+			picture for each frame. Then I put the animation together in the video sequencer and my animation was finally complete. 
+
 		</section>
 	</article>
 	
