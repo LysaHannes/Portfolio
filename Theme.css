@@ -190,3 +190,16 @@ main {
     flex: 1;
 }
 
+.center-icons {
+	display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers the rows vertically within the section */
+    align-items: center; /* Centers the rows horizontally within the section */
+    
+}
+.row{
+    display: flex;
+    justify-content: center; /* Centers the icons horizontally within the row */
+    margin: 10px 0; /* Adds some space between the rows */
+
+}
