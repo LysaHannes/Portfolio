@@ -7,6 +7,7 @@ body {
 	max-width: 1200px; /* Adjust the max-width as needed */
     margin: 0 auto;   /* Center the body */
 	margin-top: 30px; /* Adds space at the top of the webpage */
+	font-family: sans-serif;
 }
 table, th {
 	border: 5px solid #808080;	
@@ -243,4 +244,151 @@ main {
  .container .invisible-box {
 	flex: 1 1 calc(50% - 16px); /* Same size as other items */
 	visibility: hidden; /* Make it invisible */
+}
+
+.gradient-section-blender {
+	background: linear-gradient(to right, #F5792A, #eacab7); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-blender img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-android {
+	background: linear-gradient(to right, #3DDC84, #b1d7c2); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-android img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-java {
+	background: linear-gradient(to right, #007396, #b1c2c8); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-java img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-html {
+	background: linear-gradient(to right, #E34F26, #edcac0); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-html img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-opengl {
+	background: linear-gradient(to right, #5586a4, #bed4e2); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-opengl img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-sql {
+	background: linear-gradient(to right, #336791, #9dbdd6); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-sql img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
+}
+
+.gradient-section-mern {
+	background: linear-gradient(to right, white, white); /* Define gradient colors */
+	padding: 20px;
+	color: black; /* Text color to contrast with background */
+	text-size-adjust: 20px;
+	border-radius: 8px; /* Optional: rounded corners */
+	margin: 16px 0; /* Optional: margin for spacing */
+	display: flex;
+	justify-content: center; /* Center the content */
+	align-items: center; /* Vertically center content */
+	position: relative; /* Position relative for absolute positioning of icon */
+	font-size: 24px; /* Increase text size */
+}
+
+/* Style for the icon */
+.gradient-section-mern img {
+	position: absolute;
+    right: 20px; /* Position the icon to the right */
+    font-size: 100px; /* Set the font size for the icon */
 }
