@@ -392,3 +392,14 @@ main {
     right: 20px; /* Position the icon to the right */
     font-size: 100px; /* Set the font size for the icon */
 }
+
+.code-box {
+	width: 70%; /* Set the width of the code box */
+    margin: 0 auto; /* Center the box horizontally */
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap; /* Preserve formatting and allow wrapping */
+}

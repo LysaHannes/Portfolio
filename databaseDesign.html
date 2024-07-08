@@ -18,40 +18,1400 @@
     <h2>Overview</h2>
         <article>
             <section>
+             In the database course we were asked to work in groups to design an ER diagram for a specific game and then later write the SQL database schema. 
+            </br>
+            </br>
+
+             Here is our final ER diagram:
+            </br></br>
+             
+                    <div class="image-container">
+                        <img src="images/ERDiagram.png" alt="Chevrolet Camaro" width="800px" class = "center"/>
+                    </div>
+                
+                </br>
+
+             </br>
+
+            And here is our schema:
+
+            <div class="code-box">
+            <code>
+CREATE TABLE Statistics(
+    Sid CHAR(10) PRIMARY KEY,
+    Power INTEGER,
+    Strength INTEGER,
+    Life INTEGER,
+    Speed INTEGER,
+    Defense INTEGER
+);
+
+CREATE TABLE Equipment(
+    Eid CHAR(10) PRIMARY KEY,
+    Sid CHAR(10),
+    Num_Gem_Slots INTEGER,
+    Name CHAR(20),
+    Min_Level INTEGER,
+    UNIQUE(Sid),
+    FOREIGN KEY (Sid) REFERENCES Statistics
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Head (
+    Eid CHAR(10) PRIMARY KEY,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Chest (
+    Eid CHAR(10) PRIMARY KEY,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Feet (
+    Eid CHAR(10) PRIMARY KEY,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Legs (
+    Eid CHAR(10) PRIMARY KEY,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Weapons (
+    Eid CHAR(10) PRIMARY KEY,
+    Hand INTEGER,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Shields (
+    Eid CHAR(10) PRIMARY KEY,
+    Hand INTEGER,
+    FOREIGN KEY (Eid) REFERENCES Equipment 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Gem(
+    Gid CHAR(10),
+    Sid CHAR(10),
+    Min_Level INTEGER,
+    PRIMARY KEY(Gid),
+    UNIQUE(Sid),
+    FOREIGN KEY (Sid) REFERENCES Statistics
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Has_Legs(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Legs
+);
+
+CREATE TABLE Has_Head(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Head
+);
+
+CREATE TABLE Has_Chest(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Chest
+);
+
+CREATE TABLE Has_Feet(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Feet
+);
+
+CREATE TABLE Has_Weapon(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Weapons
+);
+
+CREATE TABLE Has_Shield(
+    Cid CHAR(10) PRIMARY KEY,
+    Eid CHAR(10),
+    FOREIGN KEY (Eid) REFERENCES Shields
+);
+
+CREATE TABLE Class(
+    Name CHAR(20),
+    Description CHAR(100),
+    Sid CHAR(10),
+    PRIMARY KEY(Name),
+    UNIQUE(Sid),
+    FOREIGN KEY (Sid) REFERENCES Statistics
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Character(
+    Cid CHAR(10),
+    Sid CHAR(10),
+    Class_Name CHAR(20),
+    Name CHAR(20),
+    Level INTEGER,
+    Experience REAL,
+    PRIMARY KEY(Cid),
+    UNIQUE(Sid),
+    FOREIGN KEY (Sid) REFERENCES Statistics
+    ON DELETE CASCADE,
+    FOREIGN KEY (Class_Name) REFERENCES Class(Name)
+);
+
+CREATE TABLE Skills(
+    Name CHAR(20) PRIMARY KEY,
+    Description CHAR(50),
+    Min_Level INTEGER,
+    Power_Cost REAL,
+    Is_Learnt_Automatic INTEGER
+);
+
+CREATE TABLE Clan(
+    Name CHAR(20),
+    Chief_Cid char(10),
+    Description CHAR(100),
+    PRIMARY KEY(Name),
+    UNIQUE(Chief_Cid)
+);
+
+CREATE TABLE Can_Have(
+    Skill_Name CHAR(20),
+    Class_Name CHAR(20),
+    PRIMARY KEY(Skill_Name, Class_Name),
+    FOREIGN KEY (Skill_Name) REFERENCES Skills(Name),
+    FOREIGN KEY (Class_Name) REFERENCES Class(Name)
+);
+
+CREATE TABLE Has_Skills (
+    Cid CHAR(10),
+    Name CHAR(20),
+    PRIMARY KEY(Cid, Name),
+    FOREIGN KEY (Cid) REFERENCES Character,
+    FOREIGN KEY (Name) REFERENCES Skills
+);
+
+CREATE TABLE Has_Clan (
+    Cid CHAR(10) PRIMARY KEY,
+    Name CHAR(20) NOT NULL,
+    FOREIGN KEY(Name) REFERENCES Clan,
+    FOREIGN KEY(Cid) REFERENCES Character
+);
+
+CREATE TABLE Has_Class(
+    Eid CHAR(10),
+    Class_Name CHAR(20),
+    PRIMARY KEY(Eid, Class_Name),
+    FOREIGN KEY(Class_Name) REFERENCES Class(name),
+    FOREIGN KEY(Eid) REFERENCES Equipment
+);
+
+CREATE TABLE Gem_of_E(
+    Gid CHAR(10),
+    Cid CHAR(10),
+    Eid CHAR(10),
+    PRIMARY KEY(Gid, Cid, Eid),
+    FOREIGN KEY(Gid) REFERENCES Gem,
+    FOREIGN KEY(Cid) REFERENCES Character,
+    FOREIGN KEY(Eid) REFERENCES Equipment
+);
+                </code>
+            </div>
+
+            </br></br>
+                Then in the second part of the assignment, we were asked to create SQL triggers and views with the version of the SQL database the professor gave us and connect our SQL Database to Microsoft Access, displaying specific reports about the data.
+            </br></br>
+                
+                This is the ER Diagram we were Provided:
+            </br></br>
+                <div class="image-container">
+                    <img src="images/DatabaseDesignERDiagram.png" alt="Chevrolet Camaro" width="800px" class = "center"/>
+                </div>
             
+            </br></br>
+                Here are the views we created:
+            </br></br>
+            <div class="code-box">
+                <code>
+CREATE VIEW ch_level_stats
+   SELECT "character".name, "character".level, "character".level * class.life AS life, "character".level * class.def AS def, "character".level * class.speed AS speed, "character".level * class.str AS str, "character".level * class.power AS power
+   FROM "character", class
+   WHERE "character".class = class.name;
+    
+  
+CREATE VIEW ch_armour_stats
+  SELECT character.name, equipment.name AS equipment_name, equipment.life, equipment.def, equipment.str, equipment.power, equipment.speed
+  FROM character,equipment, armour, armour_instance
+  WHERE character.name = armour_instance.cname AND equipment.eid = armour.eid AND armour_instance.eid = armour.eid;
+
+
+CREATE VIEW ch_armour_gem_stats AS
+  SELECT armour_instance.cname, SUM(gem.life) as life, SUM(gem.str) as str, SUM(gem.def) as def, SUM(gem.speed) as speed, SUM(gem.power) as power
+  FROM armour_instance, armour_gem, gem
+  WHERE armour_instance.aid = armour_gem.aid AND armour_gem.gem = gem.name
+  GROUP BY cname;
+
+
+CREATE VIEW ch_weapon_gem_stats AS
+  SELECT weapon_instance.cname, SUM(gem.life) as life, SUM(gem.str) as str, SUM(gem.def) as def, SUM(gem.speed) as speed, SUM(gem.power) as power
+  FROM weapon_instance, weapon_gem, gem
+  WHERE weapon_instance.wid = weapon_gem.wid AND weapon_gem.gem = gem.name
+  GROUP BY cname;
+
+
+CREATE VIEW ch_secondary_gem_stats AS
+  SELECT secondary_instance.cname, SUM(gem.life) as life, SUM(gem.str) as str, SUM(gem.def) as def, SUM(gem.speed) as speed, SUM(gem.power) as power
+  FROM secondary_instance, secondary_gem, gem
+  WHERE secondary_instance.sid = secondary_gem.sid AND secondary_gem.gem = gem.name
+  GROUP BY cname;
+
+
+CREATE VIEW ch_gems_stats
+  SELECT "character".name, gem.name AS gem_name, gem.life,gem.def, gem.speed, gem.str, gem.power
+  FROM "character", gem, armour_instance, weapon_instance, secondary_instance, armour_gem, weapon_gem, secondary_gem
+  WHERE "character".name = armour_instance.cname AND armour_instance.aid = armour_gem.aid AND armour_gem.gem = gem.name;
+
+
+CREATE VIEW ch_weapon_stats
+ SELECT "character".name, equipment.name AS equipment_name, equipment.life, equipment.def, equipment.speed, equipment.str, equipment.power
+ FROM "character", equipment, weapon, weapon_instance
+ WHERE "character".name = weapon_instance.cname AND equipment.eid = weapon.eid AND weapon_instance.eid = weapon.eid;
+
+
+CREATE VIEW ch_secondary_stats
+ SELECT "character".name, equipment.name AS equipment_name, equipment.life, equipment.def, equipment.speed, equipment.str, equipment.power
+ FROM "character", equipment, secondary, secondary_instance
+ WHERE "character".name = secondary_instance.cname AND equipment.eid = secondary.eid AND secondary_instance.eid = secondary.eid;
+
+
+CREATE or REPLACE VIEW report4 AS
+	SELECT L.name, L.level as level, L.life as l_life, L.str as l_str, L.def as l_def, L.speed as l_speed, L.power as l_power, W.equipment_name as w_name, W.life as w_life, W.str as w_str, W.def as w_def, W.speed as w_speed, W.power as w_power, A.equipment_name as a_name, A.life as a_life, A.str as a_str, A.def as a_def, A.speed as a_speed, A.power as a_power, S.equipment_name as s_name, S.life as s_life, S.str as s_str, S.def as s_def, S.speed as s_speed, S.power as s_power, W.equipment_name as wg_name, WG.life as wg_life, WG.str as wg_str, WG.def as wg_def, WG.speed as wg_speed, WG.power as wg_power, A.equipment_name as ag_name, AG.life as ag_life, AG.str as ag_str, AG.def as ag_def, AG.speed as ag_speed, AG.power as ag_power, S.equipment_name as sg_name, SG.life as sg_life, SG.str as sg_str, SG.def as sg_def, SG.speed as sg_speed, SG.power as sg_power
+	FROM
+	ch_level_stats L
+	LEFT OUTER JOIN ch_weapon_stats W ON L.name = W.name 
+  LEFT OUTER JOIN ch_armour_stats A ON L.name = A.name
+  LEFT OUTER JOIN ch_secondary_stats S ON L.name = S.name
+  LEFT OUTER JOIN ch_weapon_gem_stats WG ON L.name = WG.cname
+  LEFT OUTER JOIN ch_armour_gem_stats AG ON L.name = AG.cname
+  LEFT OUTER JOIN ch_secondary_gem_stats SG ON L.name = SG.cname;
+	 
+
+CREATE VIEW ch_armour_and_gem
+  SELECT view3.cname, view3.armour_id, view3.equipment_name, armour_gem.gem
+  FROM view3
+  LEFT JOIN armour_gem ON view3.armour_id = armour_gem.aid;
+
+
+CREATE VIEW ch_weapon_and_gem
+  SELECT view4.cname, view4.weapon_id, view4.equipment_name, weapon_gem.gem
+  FROM view4
+  LEFT JOIN weapon_gem ON view4.weapon_id = weapon_gem.wid;
+                </code>
+            </div>
+            </br></br>
+                Here are the triggers we created:
+            </br></br>
+
+            For armour_gem:
+            <div class="code-box">
+                <code>
+create or replace function update_armour_stats_gem() returns trigger as $$
+declare
+	gem_record RECORD;
+	ch_record RECORD;
+	armour_record RECORD;
+	add_life INTEGER;
+	add_power INTEGER;
+  	add_str INTEGER;
+  	add_def INTEGER;
+  	add_speed INTEGER;
+begin
+	SELECT * FROM gem WHERE name = NEW.gem INTO gem_record;
+	SELECT * FROM armour_instance WHERE aid = NEW.aid INTO armour_record;
+	FOR ch_record IN EXECUTE 'SELECT * FROM character'
+	LOOP
+	IF ch_record.name = armour_record.cname
+	then
+	add_life := ch_record.life + gem_record.life;
+	add_power:= ch_record.power + gem_record.power;
+ 	add_str:= ch_record.str + gem_record.str;
+  	add_def:= ch_record.def + gem_record.def;
+  	add_speed:= ch_record.speed + gem_record.speed;
+	
+	update character set life=add_life where name=ch_record.name;
+	update character set power=add_power where name=ch_record.name;
+	update character set str=add_str where name=ch_record.name;
+	update character set def=add_def where name=ch_record.name;
+	update character set speed=add_speed where name=ch_record.name;
+	end if;
+	end loop;
+	return new;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger update_armour_gem_stats
+before insert on armour_gem
+for each row
+execute procedure update_armour_stats_gem();
+
+CREATE OR REPLACE FUNCTION check_gem_number_armour() RETURNS trigger as $$
+DECLARE
+  armour_record RECORD;
+  gem_number INTEGER;
+  max_number INTEGER;
+BEGIN
+  gem_number := 0;
+  SELECT num_slots FROM equipment, armour_instance, armour
+  WHERE NEW.aid = armour_instance.aid AND armour_instance.eid = armour.eid AND armour.eid = equipment.eid
+  INTO max_number;
+
+  FOR armour_record IN EXECUTE 'SELECT * FROM armour_gem'
+  
+  LOOP
+  IF NEW.aid = armour_record.aid THEN
+  gem_number := gem_number+1;
+  END IF;
+  END LOOP;
+  IF max_number <= gem_number THEN
+    RAISE EXCEPTION 'This equipment cant have more gems on it!';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_gem_number_armour_trigger
+BEFORE INSERT ON armour_gem
+FOR EACH ROW
+EXECUTE PROCEDURE check_gem_number_armour();
+
+create or replace function delete_armour_stats_gem() returns trigger as $$
+declare
+	gem_record RECORD;
+	ch_record RECORD;
+	armour_record RECORD;
+	add_life INTEGER;
+	add_power INTEGER;
+  	add_str INTEGER;
+  	add_def INTEGER;
+  	add_speed INTEGER;
+begin
+	SELECT * FROM gem WHERE name = OLD.gem INTO gem_record;
+	SELECT * FROM armour_instance WHERE aid = OLD.aid INTO armour_record;
+	FOR ch_record IN EXECUTE 'SELECT * FROM character'
+	LOOP
+	IF ch_record.name = armour_record.cname
+	then
+	add_life := ch_record.life - gem_record.life;
+	add_power:= ch_record.power - gem_record.power;
+ 	add_str:= ch_record.str - gem_record.str;
+  	add_def:= ch_record.def - gem_record.def;
+  	add_speed:= ch_record.speed - gem_record.speed;
+	
+	update character set life=add_life where name=ch_record.name;
+	update character set power=add_power where name=ch_record.name;
+	update character set str=add_str where name=ch_record.name;
+	update character set def=add_def where name=ch_record.name;
+	update character set speed=add_speed where name=ch_record.name;
+	end if;
+	end loop;
+	return new;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger delete_armour_gem_stats
+before delete on armour_gem
+for each row
+execute procedure delete_armour_stats_gem();
+
+CREATE OR REPLACE FUNCTION check_gem_and_armour_level() RETURNS trigger as $$
+DECLARE
+  armour_record RECORD;
+  gem_level INTEGER;
+BEGIN
+  SELECT min_level FROM gem, armour_gem WHERE gem.name = armour_gem.gem INTO gem_level;
+   
+  SELECT * FROM armour_instance, armour, equipment
+  WHERE armour_instance.aid = NEW.aid AND armour_instance.eid = armour.eid AND armour.eid = equipment.eid
+  INTO armour_record;
+
+  IF armour_record.min_level <= gem_level
+  THEN
+	RAISE EXCEPTION 'Gem_min_level is larger than Equipment_min_level!';
+  END IF;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger check_gem_and_armour_level_trigger
+before insert on armour_gem
+for each row
+execute procedure check_gem_and_armour_level();
+
+
+CREATE OR REPLACE FUNCTION update_gem_and_armour() RETURNS trigger as $$
+
+BEGIN
+  RAISE EXCEPTION 'It is not allowed to modify! You need to delete it first!';
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger update_gem_and_armour_trigger
+before update on armour_gem
+for each row
+execute procedure update_gem_and_armour();
+
+
+</code>
+</div>
+For armour_instance:
+
+<div class="code-box">
+    <code>
+CREATE OR REPLACE FUNCTION update_ch_stats_armour() RETURNS trigger as $$
+DECLARE
+  update_character RECORD;
+  armour_stats RECORD;
+BEGIN
+  SELECT * FROM character
+  WHERE character.name = NEW.cname
+  INTO update_character;
+  
+  SELECT * FROM armour,equipment,armour_instance
+  WHERE armour_instance.aid = NEW.aid AND armour_instance.eid = armour.eid AND armour.eid = equipment.eid
+  INTO armour_stats;
+
+  UPDATE character
+  SET life = update_character.life + armour_stats.life, str = update_character.str + armour_stats.str, def = update_character.def+armour_stats.def, speed = update_character.speed + armour_stats.speed, power = update_character.power + armour_stats.power
+  WHERE character.name = update_character.name;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_armour_trigger
+AFTER INSERT ON armour_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_armour();
+
+
+CREATE OR REPLACE FUNCTION update_ch_stats_armour_delete() RETURNS trigger as $$
+DECLARE
+  update_character RECORD;
+  armour_stats RECORD;
+BEGIN
+  DELETE * FROM armour_gem WHERE aid = OLD.aid;
+  SELECT * FROM character
+  WHERE character.name = OLD.cname
+  INTO update_character;
+  
+  SELECT * FROM armour,equipment
+  WHERE OLD.eid = armour.eid AND armour.eid = equipment.eid
+  INTO armour_stats;
+
+  UPDATE character
+  SET life = update_character.life - armour_stats.life, str = update_character.str - armour_stats.str, def = update_character.def-armour_stats.def, speed = update_character.speed - armour_stats.speed, power = update_character.power - armour_stats.power
+  WHERE character.name = update_character.name;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_armour_delete_trigger
+BEFORE DELETE ON armour_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_armour_delete();
+
+CREATE OR REPLACE FUNCTION check_armor_level() RETURNS trigger as $$
+
+DECLARE 
+  char_level INTEGER;
+  armor_min_level INTEGER;
+BEGIN
+  SELECT level FROM character WHERE character.name = NEW.cname INTO char_level;
+  SELECT min_level FROM armour,equipment 
+  WHERE NEW.eid = armour.eid AND armour.eid = equipment.eid
+  INTO armor_min_level;
+ 
+  IF char_level < armor_min_level THEN
+      RAISE EXCEPTION 'it cannot equip character.Equipment level can not be greater than character level';
+  END IF;
+return new;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE TRIGGER check_armor_level_trigger 
+BEFORE INSERT ON armour_instance
+FOR EACH ROW
+EXECUTE PROCEDURE check_armor_level();
+
+CREATE OR REPLACE FUNCTION check_allowed_equipment()
+RETURNS TRIGGER AS $$
+DECLARE
+    is_allowed boolean;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1
+        FROM can_equip, character
+        WHERE can_equip.class = character.class
+          AND can_equip.eid = NEW.eid
+          AND character.name = NEW.cname
+    ) INTO is_allowed;
+
+    IF NOT is_allowed THEN
+        RAISE EXCEPTION 'The equipment is not allowed for the character class.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER allowed_armour_trigger
+    BEFORE INSERT OR UPDATE ON armour_instance
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_allowed_equipment();
+
+
+</code>
+</div>
+For character:
+<div class="code-box">
+    <code>
+CREATE OR REPLACE FUNCTION prevent_update_level() RETURNS trigger as $$
+BEGIN
+  RAISE EXCEPTION 'It is not allowed to modify the level directly! You should update exp instead!';
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_update_level_trigger
+BEFORE UPDATE OF level ON character
+FOR EACH ROW
+EXECUTE PROCEDURE prevent_update_level();
+
+CREATE OR REPLACE FUNCTION check_auto_skill() RETURNS trigger as $$
+DECLARE
+  skill_record RECORD;
+  ch_record RECORD;
+  skill_exist BOOLEAN;
+BEGIN
+  SELECT * FROM character WHERE name = NEW.name INTO ch_record;
+  FOR skill_record IN EXECUTE 'SELECT * FROM auto_skill'
+  LOOP
+  SELECT EXISTS(
+  	SELECT 1
+ 	FROM owns_skill
+	WHERE skill = skill_record.skill AND character = ch_record.name
+  ) INTO skill_exist;
+  IF skill_record.class = ch_record.class AND skill_record.level <= ch_record.level AND NOT skill_exist
+  THEN
+  INSERT INTO owns_skill(character, skill) VALUES(ch_record.name, skill_record.skill);
+  END IF;
+  END LOOP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_auto_skill_trigger 
+AFTER UPDATE OF exp ON character
+FOR EACH ROW
+EXECUTE PROCEDURE check_auto_skill();
+
+CREATE OR REPLACE FUNCTION update_ch_stats_level() RETURNS trigger as $$
+DECLARE
+  class_initial_stats RECORD;
+  cur_level INTEGER;
+  new_level INTEGER;
+  add_life INTEGER;
+  add_power INTEGER;
+  add_str INTEGER;
+  add_def INTEGER;
+  add_speed INTEGER;
+BEGIN
+  cur_level := NEW.level;
+  SELECT * FROM class WHERE class.name = NEW.class 
+  INTO class_initial_stats;
+  
+  new_level := NEW.exp / 10000;
+  add_life := (new_level-cur_level)*class_initial_stats.life;
+  add_power := (new_level-cur_level)*class_initial_stats.power;
+  add_def := (new_level-cur_level)*class_initial_stats.def;
+  add_str := (new_level-cur_level)*class_initial_stats.str;
+  add_speed := (new_level-cur_level)*class_initial_stats.speed;
+
+  NEW.life := NEW.life + add_life;
+  NEW.str := NEW.str + add_str;
+  NEW.speed := NEW.speed + add_speed;
+  NEW.def := NEW.def + add_def;
+  NEW.power := NEW.power + add_power;
+  NEW.level := new_level;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_level_trigger
+BEFORE UPDATE OF exp ON character
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_level();
+                </code>
+            </div>
+
+For clan:
+    <div class="code-box">
+        <code>
+create or replace function check_chief() returns trigger as $$
+declare
+    clan_record RECORD;
+    member_record RECORD;
+    chief char(40);
+    
+begin
+    chief = NEW.chief;
+
+    for member_record in execute 'select * from clan_member'
+    loop
+    if member_record.character = chief
+    then
+    raise exception 'chief is already part of a clan';
+    end if;
+    end loop;
+    
+    return NEW;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger check_the_chief
+before insert on clan
+for each row
+execute procedure check_chief();
+
+
+create or replace function add_chief() returns trigger as $$
+declare
+    chief char(40);
+    
+begin
+    chief = NEW.chief;
+
+    insert into clan_member values(NEW.name, chief);
+    
+    return NEW;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger add_the_chief
+after insert on clan
+for each row
+execute procedure add_chief();
+
+
+
+create or replace function update_chief() returns trigger as $$
+declare
+    chief char(40);
+    member_record RECORD;
+    
+begin
+    chief = NEW.chief;
+
+    if NOT EXISTS (select 1 from clan_member where character = chief and clan = OLD.name) then
+    raise exception 'The new chief needs to be part of the clan';
+    end if;
+    
+    return NEW;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger update_the_chief
+before update on clan
+for each row
+execute procedure update_chief();
+        </code>
+    </div>
+
+For clan_member:
+    <div class="code-box">
+        <code>
+create or replace function check_member() returns trigger as $$
+declare
+	member_record RECORD;
+	member char(40);
+	
+begin
+	member = NEW.character;
+
+	for member_record in execute 'select * from clan_member'
+	loop
+	if member_record.character = member
+	then
+	raise exception 'member is already a member of a clan';
+	end if;
+	end loop;
+
+	return NEW;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger check_the_member
+before insert on clan_member
+for each row
+execute procedure check_member();
+
+create or replace function delete_member() returns trigger as $$
+declare
+	character char(40);
+	clan_record RECORD;
+	
+begin
+	character = OLD.character;
+
+	for clan_record in execute 'select * from clan'
+	loop
+	if clan_record.chief = character
+	then
+	raise exception 'member is the leader of the clan';
+	end if;
+	end loop;
+	
+	return OLD;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger delete_the_member
+before delete on clan_member
+for each row
+execute procedure delete_member();
+        </code>
+    </div>
+
+For owns_skill:
+    <div class="code-box">
+        <code>
+CREATE OR REPLACE FUNCTION check_skill_level() RETURNS trigger as $$
+DECLARE
+  ch_level INTEGER;
+  skill_level INTEGER;
+BEGIN
+  SELECT min_level FROM skill
+  WHERE NEW.skill = skill.name
+  INTO skill_level;
+
+  SELECT level FROM character
+  WHERE NEW.character = character.name
+  INTO ch_level;
+
+  IF ch_level < skill_level THEN
+    RAISE EXCEPTION 'This skill cant be assigned to the character: Level too low!';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_skill_level_trigger
+BEFORE INSERT ON owns_skill
+FOR EACH ROW
+EXECUTE PROCEDURE check_skill_level();
+
+CREATE OR REPLACE FUNCTION check_allowed_skill()
+RETURNS TRIGGER AS $$
+DECLARE
+    is_allowed boolean;
+    ch RECORD;
+BEGIN
+    SELECT * FROM character WHERE character.name = NEW.character INTO ch;
+    SELECT EXISTS (
+        SELECT 1
+        FROM allowed_skill
+        WHERE allowed_skill.class = ch.class
+          AND allowed_skill.skill = NEW.skill
+    ) INTO is_allowed;
+
+    IF NOT is_allowed THEN
+        RAISE EXCEPTION 'The skill is not allowed for the character class.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER allowed_skill_trigger
+    BEFORE INSERT OR UPDATE ON owns_skill
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_allowed_skill();
+        </code>
+    </div>
+
+For secondary_gem:
+    <div class="code-box">
+        <code>
+CREATE OR REPLACE FUNCTION check_gem_number_secondary() RETURNS trigger as $$
+DECLARE
+    secondary_record RECORD;
+    gem_number INTEGER;
+    max_number INTEGER;
+BEGIN
+    gem_number := 0;
+    SELECT num_slots FROM equipment, secondary_instance, secondary
+    WHERE NEW.sid = secondary_instance.sid AND secondary_instance.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO max_number;
+
+    FOR secondary_record IN EXECUTE 'SELECT * FROM secondary_gem'
+    
+    LOOP
+    IF NEW.sid = secondary_record.sid THEN
+    gem_number := gem_number+1;
+    END IF;
+    END LOOP;
+    IF max_number <= gem_number THEN
+    RAISE EXCEPTION 'This equipment cant have more gems on it!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_gem_number_secondary_trigger
+BEFORE INSERT ON secondary_gem
+FOR EACH ROW
+EXECUTE PROCEDURE check_gem_number_secondary();
+
+create or replace function update_secondary_stats_gem() returns trigger as $$
+declare
+    gem_record RECORD;
+    ch_record RECORD;
+    secondary_record RECORD;
+    add_life INTEGER;
+    add_power INTEGER;
+        add_str INTEGER;
+        add_def INTEGER;
+        add_speed INTEGER;
+begin
+    SELECT * FROM gem WHERE name = NEW.gem INTO gem_record;
+    SELECT * FROM secondary_instance WHERE sid = NEW.sid INTO secondary_record;
+    FOR ch_record IN EXECUTE 'SELECT * FROM character'
+    LOOP
+    IF ch_record.name = secondary_record.cname
+    then
+    add_life := ch_record.life + gem_record.life;
+    add_power:= ch_record.power + gem_record.power;
+        add_str:= ch_record.str + gem_record.str;
+        add_def:= ch_record.def + gem_record.def;
+        add_speed:= ch_record.speed + gem_record.speed;
+    
+    update character set life=add_life where name=ch_record.name;
+    update character set power=add_power where name=ch_record.name;
+    update character set str=add_str where name=ch_record.name;
+    update character set def=add_def where name=ch_record.name;
+    update character set speed=add_speed where name=ch_record.name;
+    end if;
+    end loop;
+    return new;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger update_secondary_gem_stats
+before insert on secondary_gem
+for each row
+execute procedure update_secondary_stats_gem();
+
+create or replace function delete_secondary_stats_gem() returns trigger as $$
+declare
+    gem_record RECORD;
+    ch_record RECORD;
+    secondary_record RECORD;
+    add_life INTEGER;
+    add_power INTEGER;
+        add_str INTEGER;
+        add_def INTEGER;
+        add_speed INTEGER;
+begin
+    SELECT * FROM gem WHERE name = OLD.gem INTO gem_record;
+    SELECT * FROM secondary_instance WHERE sid = OLD.sid INTO secondary_record;
+    FOR ch_record IN EXECUTE 'SELECT * FROM character'
+    LOOP
+    IF ch_record.name = secondary_record.cname
+    then
+    add_life := ch_record.life - gem_record.life;
+    add_power:= ch_record.power - gem_record.power;
+        add_str:= ch_record.str - gem_record.str;
+        add_def:= ch_record.def - gem_record.def;
+        add_speed:= ch_record.speed - gem_record.speed;
+    
+    update character set life=add_life where name=ch_record.name;
+    update character set power=add_power where name=ch_record.name;
+    update character set str=add_str where name=ch_record.name;
+    update character set def=add_def where name=ch_record.name;
+    update character set speed=add_speed where name=ch_record.name;
+    end if;
+    end loop;
+    return new;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger delete_secondary_gem_stats
+before delete on secondary_gem
+for each row
+execute procedure delete_secondary_stats_gem();
+
+
+CREATE OR REPLACE FUNCTION check_gem_and_secondary_level() RETURNS trigger as $$
+DECLARE
+    secondary_record RECORD;
+    gem_level INTEGER;
+BEGIN
+    SELECT min_level FROM gem, secondary_gem WHERE gem.name = secondary_gem.gem INTO gem_level;
+    
+    SELECT * FROM secondary_instance, secondary, equipment
+    WHERE secondary_instance.sid = NEW.sid AND secondary_instance.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO secondary_record;
+    
+    IF secondary_record.min_level < gem_level
+    THEN
+    RAISE EXCEPTION 'Gem_min_level is larger than Equipment_min_level!';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger check_gem_and_secondary_level_trigger
+before insert on secondary_gem
+for each row
+execute procedure check_gem_and_secondary_level();
+
+
+CREATE OR REPLACE FUNCTION update_gem_and_secondary() RETURNS trigger as $$
+
+BEGIN
+    RAISE EXCEPTION 'It is not allowed to modify aid! You need to delete it first!';
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger update_gem_and_secondary_trigger
+before update on secondary_gem
+for each row
+execute procedure update_gem_and_secondary();
+        </code>
+    </div>
+
+For secondary_instance:
+    <div class="code-box">
+        <code>
+CREATE OR REPLACE FUNCTION update_ch_stats_sec() RETURNS trigger as $$
+DECLARE
+    update_character RECORD;
+    secondary_stats RECORD;
+BEGIN
+    SELECT * FROM character
+    WHERE character.name = NEW.cname
+    INTO update_character;
+    
+    SELECT * FROM secondary,equipment,secondary_instance
+    WHERE secondary_instance.sid = NEW.sid AND secondary_instance.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO secondary_stats;
+
+    UPDATE character
+    SET life = update_character.life + secondary_stats.life, str = update_character.str + secondary_stats.str, def = update_character.def+secondary_stats.def, speed = update_character.speed + secondary_stats.speed, power = update_character.power + secondary_stats.power
+    WHERE character.name = update_character.name;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_sec_trigger
+AFTER INSERT ON secondary_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_sec();
+
+
+CREATE OR REPLACE FUNCTION update_ch_stats_sec_delete() RETURNS trigger as $$
+DECLARE
+    update_character RECORD;
+    secondary_stats RECORD;
+BEGIN
+    DELETE * FROM secondary_gem WHERE sid = OLD.sid;
+    SELECT * FROM character
+    WHERE character.name = OLD.cname
+    INTO update_character;
+    
+    SELECT * FROM secondary,equipment,secondary_instance
+    WHERE secondary_instance.sid = OLD.sid AND secondary_instance.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO secondary_stats;
+
+    UPDATE character
+    SET life = update_character.life - secondary_stats.life, str = update_character.str - secondary_stats.str, def = update_character.def-secondary_stats.def, speed = update_character.speed - secondary_stats.speed, power = update_character.power - secondary_stats.power
+    WHERE character.name = update_character.name;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_sec_delete_trigger
+before delete ON secondary_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_sec_delete();
+
+CREATE OR REPLACE FUNCTION check_secondary_level() RETURNS trigger as $$
+
+DECLARE 
+    char_level INTEGER;
+    secondary_min_level INTEGER;
+BEGIN
+    SELECT level FROM character WHERE name = NEW.cname INTO char_level;
+    SELECT min_level FROM secondary, equipment 
+    WHERE NEW.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO secondary_min_level;
+    
+    IF char_level < secondary_min_level THEN
+        RAISE EXCEPTION 'It cannot equip character.Equipment level can not be greater than character level';
+        END IF;
+return new;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_secondary_level_trigger 
+BEFORE INSERT ON secondary_instance
+FOR EACH ROW
+EXECUTE PROCEDURE check_secondary_level();
+
+CREATE OR REPLACE FUNCTION check_gem_number_secondary() RETURNS trigger as $$
+DECLARE
+    secondary_record RECORD;
+    gem_number INTEGER;
+    max_number INTEGER;
+BEGIN
+    gem_number := 0;
+    SELECT num_slots FROM equipment, secondary_instance, secondary_gem, weapon
+    WHERE NEW.sid = secondary_instance.sid AND secondary_instance.eid = secondary.eid AND secondary.eid = equipment.eid
+    INTO max_number;
+
+    FOR secondary_record IN EXECUTE 'SELECT * FROM secondary_gem WHERE aid = NEW.aid'
+    
+    LOOP
+    gem_number := gem_number+1;
+    END LOOP;
+    IF max_number = gem_number THEN
+    RAISE EXCEPTION 'This equipment cant have more gems on it!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_gem_number_secondary_trigger
+BEFORE INSERT ON secondary_gem
+FOR EACH ROW
+EXECUTE PROCEDURE check_gem_number_secondary();
+
+
+CREATE OR REPLACE FUNCTION check_allowed_equipment()
+RETURNS TRIGGER AS $$
+DECLARE
+    is_allowed boolean;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1
+        FROM can_equip, character
+        WHERE can_equip.class = character.class
+            AND can_equip.eid = NEW.eid
+            AND character.name = NEW.cname
+    ) INTO is_allowed;
+
+    IF NOT is_allowed THEN
+        RAISE EXCEPTION 'The equipment is not allowed for the character class.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER allowed_secondary_trigger
+    BEFORE INSERT OR UPDATE ON secondary_instance
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_allowed_equipment();
+        </code>
+    </div>
+
+For weapon_gem:
+    <div class="code-box">
+        <code>
+CREATE OR REPLACE FUNCTION check_gem_number_weapon() RETURNS trigger as $$
+DECLARE
+  weapon_record RECORD;
+  gem_number INTEGER;
+  max_number INTEGER;
+BEGIN
+  gem_number := 0;
+  SELECT num_slots FROM equipment, weapon_instance, weapon
+  WHERE NEW.wid = weapon_instance.wid AND weapon_instance.eid = weapon.eid AND weapon.eid = equipment.eid
+  INTO max_number;
+
+  FOR weapon_record IN EXECUTE 'SELECT * FROM weapon_gem'
+  
+  LOOP
+  IF NEW.wid = weapon_record.wid THEN
+  gem_number := gem_number+1;
+  END IF;
+  END LOOP;
+  IF max_number <= gem_number THEN
+    RAISE EXCEPTION 'This equipment cant have more gems on it!';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_gem_number_weapon_trigger
+BEFORE INSERT ON weapon_gem
+FOR EACH ROW
+EXECUTE PROCEDURE check_gem_number_weapon();
+
+create or replace function update_weapon_stats_gem() returns trigger as $$
+declare
+	gem_record RECORD;
+	ch_record RECORD;
+	weapon_record RECORD;
+	add_life INTEGER;
+	add_power INTEGER;
+  	add_str INTEGER;
+  	add_def INTEGER;
+  	add_speed INTEGER;
+begin
+	SELECT * FROM gem WHERE name = NEW.gem INTO gem_record;
+	SELECT * FROM weapon_instance WHERE wid = NEW.wid INTO weapon_record;
+	FOR ch_record IN EXECUTE 'SELECT * FROM character'
+	LOOP
+	IF ch_record.name = weapon_record.cname
+	then
+	add_life := ch_record.life + gem_record.life;
+	add_power:= ch_record.power + gem_record.power;
+ 	add_str:= ch_record.str + gem_record.str;
+  	add_def:= ch_record.def + gem_record.def;
+  	add_speed:= ch_record.speed + gem_record.speed;
+	
+	update character set life=add_life where name=ch_record.name;
+	update character set power=add_power where name=ch_record.name;
+	update character set str=add_str where name=ch_record.name;
+	update character set def=add_def where name=ch_record.name;
+	update character set speed=add_speed where name=ch_record.name;
+	end if;
+	end loop;
+	return new;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger update_weapon_gem_stats
+before insert on weapon_gem
+for each row
+execute procedure update_weapon_stats_gem();
+
+create or replace function delete_weapon_stats_gem() returns trigger as $$
+declare
+	gem_record RECORD;
+	ch_record RECORD;
+	weapon_record RECORD;
+	add_life INTEGER;
+	add_power INTEGER;
+  	add_str INTEGER;
+  	add_def INTEGER;
+  	add_speed INTEGER;
+begin
+	SELECT * FROM gem WHERE name = OLD.gem INTO gem_record;
+	SELECT * FROM weapon_instance WHERE wid = OLD.wid INTO weapon_record;
+	FOR ch_record IN EXECUTE 'SELECT * FROM character'
+	LOOP
+	IF ch_record.name = weapon_record.cname
+	then
+	add_life := ch_record.life - gem_record.life;
+	add_power:= ch_record.power - gem_record.power;
+ 	add_str:= ch_record.str - gem_record.str;
+  	add_def:= ch_record.def - gem_record.def;
+  	add_speed:= ch_record.speed - gem_record.speed;
+	
+	update character set life=add_life where name=ch_record.name;
+	update character set power=add_power where name=ch_record.name;
+	update character set str=add_str where name=ch_record.name;
+	update character set def=add_def where name=ch_record.name;
+	update character set speed=add_speed where name=ch_record.name;
+	end if;
+	end loop;
+	return old;
+end;
+$$ LANGUAGE plpgsql;
+
+create trigger delete_weapon_gem_stats
+before delete on weapon_gem
+for each row
+execute procedure delete_weapon_stats_gem();
+
+CREATE OR REPLACE FUNCTION check_gem_and_weapon_level() RETURNS trigger as $$
+DECLARE
+  weapon_record RECORD;
+  gem_level INTEGER;
+BEGIN
+  SELECT min_level FROM gem, weapon_gem WHERE gem.name = weapon_gem.gem INTO gem_level;
+   
+  SELECT * FROM weapon_instance, weapon, equipment
+  WHERE weapon_instance.wid = NEW.wid AND weapon_instance.eid = weapon.eid AND weapon.eid = equipment.eid
+  INTO weapon_record;
+  
+  IF weapon_record.min_level < gem_level
+  THEN
+	RAISE EXCEPTION 'Gem_min_level is larger than Equipment_min_level!';
+  END IF;
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger check_gem_and_weapon_level_trigger
+before insert on weapon_gem
+for each row
+execute procedure check_gem_and_weapon_level();
+
+
+
+CREATE OR REPLACE FUNCTION update_gem_and_weapon() RETURNS trigger as $$
+
+BEGIN
+  RAISE EXCEPTION 'It is not allowed to modify wid! You need to delete it first!';
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger update_gem_and_weapon_trigger
+before update on weapon_gem
+for each row
+execute procedure update_gem_and_weapon();
+        </code>
+    </div>
+
+For weapon_instance:
+    <div class="code-box">
+        <code>
+CREATE OR REPLACE FUNCTION update_ch_stats_weapon() RETURNS trigger as $$
+DECLARE
+  update_character RECORD;
+  weapon_stats RECORD;
+BEGIN
+  SELECT * FROM character
+  WHERE character.name = NEW.cname
+  INTO update_character;
+  
+  SELECT * FROM weapon,equipment,weapon_instance
+  WHERE weapon_instance.wid = NEW.wid AND weapon_instance.eid = weapon.eid AND weapon.eid = equipment.eid
+  INTO weapon_stats;
+
+  UPDATE character
+  SET life = update_character.life + weapon_stats.life, str = update_character.str + weapon_stats.str, def = update_character.def+weapon_stats.def, speed = update_character.speed + weapon_stats.speed, power = update_character.power + weapon_stats.power
+  WHERE character.name = update_character.name;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_weapon_trigger
+AFTER INSERT ON weapon_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_weapon();
+
+
+CREATE OR REPLACE FUNCTION update_ch_stats_weapon_delete() RETURNS trigger as $$
+DECLARE
+  update_character RECORD;
+  weapon_stats RECORD;
+BEGIN
+  DELETE FROM weapon_gem WHERE wid = OLD.wid;
+  SELECT * FROM character
+  WHERE character.name = OLD.cname
+  INTO update_character;
+  
+  SELECT * FROM weapon,equipment,weapon_instance
+  WHERE weapon_instance.wid = OLD.wid AND weapon_instance.eid = weapon.eid AND weapon.eid = equipment.eid
+  INTO weapon_stats;
+
+  UPDATE character
+  SET life = update_character.life - weapon_stats.life, str = update_character.str - weapon_stats.str, def = update_character.def-weapon_stats.def, speed = update_character.speed - weapon_stats.speed, power = update_character.power - weapon_stats.power
+  WHERE character.name = update_character.name;
+
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_ch_stats_weapon_delete_trigger
+BEFORE DELETE ON weapon_instance
+FOR EACH ROW
+EXECUTE PROCEDURE update_ch_stats_weapon_delete();
+
+CREATE OR REPLACE FUNCTION check_weapon_level() RETURNS trigger as $$
+
+DECLARE 
+  char_level INTEGER;
+  weapon_min_level INTEGER;
+BEGIN
+  SELECT level FROM character WHERE name = NEW.cname INTO char_level;
+  SELECT min_level FROM weapon,equipment 
+  WHERE NEW.eid = weapon.eid AND weapon.eid = equipment.eid
+  INTO weapon_min_level;
+ 
+    IF char_level < weapon_min_level THEN
+        RAISE EXCEPTION 'it cannot equip character.Equipment level can not be greater than character level';
+        END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_weapon_level_trigger 
+BEFORE INSERT ON weapon_instance
+FOR EACH ROW
+EXECUTE PROCEDURE check_weapon_level();
+
+CREATE OR REPLACE FUNCTION check_allowed_equipment()
+RETURNS TRIGGER AS $$
+DECLARE
+    is_allowed boolean;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1
+        FROM can_equip, character
+        WHERE can_equip.class = character.class
+          AND can_equip.eid = NEW.eid
+          AND character.name = NEW.cname
+    ) INTO is_allowed;
+
+    IF NOT is_allowed THEN
+        RAISE EXCEPTION 'The equipment is not allowed for the character class.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER allowed_weapon_trigger
+    BEFORE INSERT OR UPDATE ON weapon_instance
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_allowed_equipment();
+
+        </code>
+    </div>
             </section>
         </article>
     
     <p>
     </p>
-    <h2>App Demo Video</h2>
-    <article>
-        <section>
-        
-        <br></br>
-			<center>
-				<video width="600"  controls>
-					<source src="" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</center>
-			
-                    
-        </section>
-    </article>
-    <p>
-    </p>
-    <h2>Github</h2>
-    <div class="container">
-    <a href="databaseDesign.html">
-        <article>
-            <section class="gradient-section-sql">
-                Database Design For a Game Github
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" height="65"/>
-            </section>
-        </article>
-        </a>
-    </div>
+    
+    
 </body>
 <p>
 </p>
