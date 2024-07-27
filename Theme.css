@@ -403,3 +403,25 @@ main {
     font-family: 'Courier New', Courier, monospace;
     white-space: pre-wrap; /* Preserve formatting and allow wrapping */
 }
+
+.slide-container {
+	max-width: 100%;
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+	height: 0;
+	overflow: hidden;
+	background: #f1f1f1;
+	margin: 20px 0; /* Adds some space around the section */
+}
+
+.slide-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.slide-section {
+	background-color: #f9f9f9;
+}
