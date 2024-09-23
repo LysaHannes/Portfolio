@@ -19,14 +19,9 @@
         <section>
         
         
-			<center>
-				<video width="600"  controls>
-					<source src="" type="video/mp4">
-					Your browser does not support the video tag.
-				</video>
-			</center>
+			No demo cus I forgot to make a video when I had the free trail for google maps api made it, and I don't want to pay for google apps api just for one video.
 			
-                    
+            
         </section>
     </article>
     <p>
@@ -34,7 +29,7 @@
     <h2>Overview</h2>
         <article>
             <section>
-            For our final project in the Android Studio App Dev course we were allowed to create whatever app our hearts desired, in groups of 2. My Partner and I decided to create a Weather App.
+            For our final project in the Android Studio App Dev course we were allowed to create whatever app our hearts desired, in groups of 2. My Partner(Robert Pierik) and I decided to create a Weather App.
             </section>
         </article>
         <p>
@@ -42,10 +37,158 @@
     <h2>Process</h2>
         <article>
             <section>
+                First steps were making a little mockup for the layout of our app.
+                <br></br>
+
+                <center>				
+                    <img src="images/WeatherApp1.png" alt="WeatherApp Pictures" width="600">
+                </center>
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp2.png" alt="WeatherApp Pictures" width="600">
+                </center>
+                <br></br>
+                Then we created the base template from class and uploaded it to github so we can work on it together. 
+                We decided to target android API level 23, to keep a high (>95%) device compatibility while also allowing the use of many newer features.
+                <br></br>
+                Next was implementing the very basics of a weather app layout. (The picture provided has hardcoded values.)
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp3.png" alt="WeatherApp Pictures" width="500">
+                </center>
+                <br></br>
+                Next we had to get the latitude and longitude of the user. This video was very helpful: 
+                <a href="https://www.youtube.com/watch?v=mbQd6frpC3g">https://www.youtube.com/watch?v=mbQd6frpC3g</a>
+                <br></br>
+                Now we had to get the city closest to the user’s current longitude and latitude. 
+                First we looked into using the GeoNames API but the results were not accurate at all. So we went with Google Maps API.
+                <br></br>
+                The next step was to use a weather API and get the weather information for the location.
+                <br></br>
+                Or so we thought…. 5 different tutorials later, we found out that you need an actual android device to be able to get the device’s longitude and latitude.
+                So we just decided to make a search bar come up when you first enter the app that searches for cities and then it returns the data for the city you select.
+                That way we don't have to worry about location services.
+                <br></br>
+                So we used the google Place API docs to help set up the SDKS: 
+                <a href="https://developers.google.com/maps/documentation/places/android-sdk/config#places-sdk-for-android">https://developers.google.com/maps/documentation/places/android-sdk/config#places-sdk-for-android</a>
+                <br></br>
+                Then get a search bar going: 
+                <a href="https://developers.google.com/maps/documentation/places/android-sdk/autocomplete">https://developers.google.com/maps/documentation/places/android-sdk/autocomplete</a>
+                <br></br>
+                It doesn't work to get the longitude and latitude for all cities, since there isn't data for every city, 
+                but there is for the bigger ones like St. Catharines, and Toronto. So we created an error message if google doesn't have the latitude and longitude of a city.
+                <br></br>
+                Here is a couple pictures of the search screen that shows up on app start:
+                (We had to use nexus 5 instead of nexus 4 because the nexus 5 has google apps enabled.)
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp4.png" alt="WeatherApp Pictures" height="500">
+                    <img src="images/WeatherApp5.png" alt="WeatherApp Pictures" height="500">
+                    <img src="images/WeatherApp6.png" alt="WeatherApp Pictures" height="500">
+                </center>
+                <br></br>
+                Next we set up the room database to store the location so the user doesn't have to set their home every time they open the app. 
+                It will also store additional locations that the user would want to view the weather for.
+                <br></br>
+                Then we set up all the functionality for viewing different cities, as well as a navbar at the bottom. 
+                For the navbar we used this link to help us get a more professional looking navbar: 
+                <a href="https://www.youtube.com/watch?v=jOFLmKMOcK0">https://www.youtube.com/watch?v=jOFLmKMOcK0</a>
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp7.png" alt="WeatherApp Pictures" height="500">
+                    <img src="images/WeatherApp8.png" alt="WeatherApp Pictures" height="500">
+                    <img src="images/WeatherApp9.png" alt="WeatherApp Pictures" height="500">
+                    <img src="images/WeatherApp10.png" alt="WeatherApp Pictures" height="500">
+                </center>
+                <br></br>
+                When you click on a different city it will transfer the data of the city you click on  to the home page. 
+                We also added a way to delete saved cities. And if the city that was set with the home status gets deleted, and you go to the homescreen, 
+                the message to select your home city comes up again so it can display that by default.
+                <br></br>
+                Now that we have coordinates, we were finally able to take the next steps to figure out how to get the weather forecast for a particular longitude and latitude. 
+                <br></br>
+                To do so we decided to go with the open weather API:
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp11.png" alt="WeatherApp Pictures" height="500">
+                </center>
+                <br></br>
+                After that we attempted 2 different ways to get a picture to display the weather visually but both ways failed. 
+                The first one was OpenWeather’s icon, we were able to get the link that it mentioned to use but there was a problem with requests and threading
+                and we couldn't figure out how to fix it. The other way was to add pictures manually, and then figure out what the picture would be through
+                 the id displayed from the OpenWeather link. But nothing displayed for some reason. And we spent too much time on it so we gave up.
+                <br></br>
+                Lastly, we added the map of the weather using mapbox. The initial setup of the map view was pretty simple using the mapbox SDK. 
+                Although in order to properly display it, we had to switch the emulated device I was using to a newer one, as the Nexus 5 version did not support 
+                the OpenGL ES version that was needed.
+                <br></br>
+                <center>				
+                    <img src="images/WeatherApp12.png" alt="WeatherApp Pictures" height="500">
+                </center>
+                <br></br>
+                Next up was trying to add the precipitation data to the maps. This turned out to be way more of a headache than previously thought. 
+                Firstly most of the documentation for the Android Mapbox SDK turned out to be written for Kotlin, this means that while most functions were available 
+                for use in java, all code snippets were mostly unable to be directly converted. Secondly when we did finally figure out how to import tilesets into the 
+                Mapbox container, we found much difficulty getting the OpenWeatherMap tileset to interact properly, as the Mapbox container is expecting it to be in GeoJSON 
+                format and it is served as raw tiles. To fix this, a change to either a different weathermap provider, or a different mapview provider may be necessary in 
+                order to fix these issues.
+
+
+
 
             </section>
         </article>
-    
+        <p>
+        </p>
+    <h2>Sources</h2>
+        <article>
+            <section>
+                <ul>
+                    <li>API:
+                        <ul>
+                            <li>Google Maps API:
+                                <ul>
+                                    <li><a href="https://developers.google.com/maps">https://developers.google.com/maps</a></li>
+                                    <li><a href="https://developers.google.com/android/guides/setup">https://developers.google.com/android/guides/setup</a></li>
+                                    <li><a href="https://console.cloud.google.com/google/maps-apis/api-list?project=arched-champion-420423">https://console.cloud.google.com/google/maps-apis/api-list?project=arched-champion-420423</a></li>
+                                    <li><a href="https://developers.google.com/maps/documentation/geocoding/overview">https://developers.google.com/maps/documentation/geocoding/overview</a></li>
+                                </ul>
+                            </li>
+                            <li>Mapbox API:
+                                <ul>
+                                    <li><a href="https://www.mapbox.com/">https://www.mapbox.com/</a></li>
+                                </ul>
+                            </li>
+                            <li>OpenWeather API:
+                                <ul>
+                                    <li><a href="https://openweathermap.org/api/">https://openweathermap.org/api/</a></li>
+                                    <li><a href="https://openweathermap.org/weather-conditions#Icon-list">https://openweathermap.org/weather-conditions#Icon-list</a></li>
+                                    <li><a href="https://home.openweathermap.org">https://home.openweathermap.org</a></li>
+                                    <li><a href="https://openweathermap.org/api/hourly-forecast">https://openweathermap.org/api/hourly-forecast</a></li>
+                                    <li><a href="https://openweathermap.org/api/weathermaps">https://openweathermap.org/api/weathermaps</a></li>
+                                </ul>
+                            </li>
+                            <li>Room API:
+                                <ul>
+                                    <li><a href="https://developer.android.com/training/data-storage/room">https://developer.android.com/training/data-storage/room</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Tutorials:
+                        <ul>
+                            <li><a href="https://www.youtube.com/watch?v=jOFLmKMOcK0">Navbar Tutorial</a></li>
+                            <li><a href="https://stackoverflow.com/questions/6972295/how-to-switch-activity-without-animation-in-android">No Animation for New Intents</a></li>
+                            <li><a href="https://docs.mapbox.com/android/maps/api/11.0.0-beta.3/">MapBox Documentation</a></li>
+                            <li><a href="https://docs.mapbox.com/android/maps/examples/">MapBox Examples</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+
+            </section>
+        </article>
     
 </body>
 <p>
