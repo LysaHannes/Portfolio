@@ -14,24 +14,14 @@
         <h1 class = "fancy"><b>Calculator App</b></h1>
         
     </header>
-    
-    <h2>Overview</h2>
-        <article>
-            <section>
-            
-            </section>
-        </article>
-    
-    <p>
-    </p>
     <h2>App Demo Video</h2>
     <article>
         <section>
         
-        <br></br>
+        
 			<center>
-				<video width="600"  controls>
-					<source src="" type="video/mp4">
+				<video width="600"  controls height="600">
+					<source src="videos/calculatorAppVid.mp4" type="video/mp4">
 					Your browser does not support the video tag.
 				</video>
 			</center>
@@ -41,17 +31,138 @@
     </article>
     <p>
     </p>
-    <h2>Github</h2>
-    <div class="container">
-        <a href="calculatorApp.html">
-            <article>
-                <section class="gradient-section-android">
-                    Calculator App Github
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" height="65" />
-                </section>
-            </article>
-        </a>
-    </div>
+    <h2>Overview</h2>
+        <article>
+            <section>
+            I used Android studio to create this app. The professor said every calculator app he has ever looked over has had some sort of problem. 
+            So I made it my goal to make this app perfect with no flaws. I went through vigorous testing to ensure it was perfect and I succeeded achieving 100% for my final grade. 
+            <br></br>
+            When creating my app, I decided to make my own combination of the Apple Calculator App and the Android Calculator App, combining my favorite details from both.
+            <br></br>
+            The one error I know exists and I didn't know how to fix is overfilling the textView with numbers. 
+            Also when my screen is rotated it doesn't save the calculation for some reason even though I set the id.
+            <br></br>
+            <br></br>
+            Here are all the edge cases that I covered (as far as I can remember) and how I handled them:
+            
+            <ul>
+                <li>When clicking a number(not including 0) :
+                    <ul>
+                        <li>if the "=" button was just pressed
+                            <ul>
+                                <li>then the number pressed replaces the calculation</li>
+                            </ul>
+                        </li>   
+                        <li>if there have been numbers input, and the user didn't type "0" after a decimal
+                            <ul>
+                                <li>then we remove the last char of the number and replace it with the clicked number</li>
+                            </ul>
+                        </li> 
+                        <li>if there have been numbers input, and the only number on the screen is 0(even if the user input 0)
+                            <ul>
+                                <li>then we remove the last char of the number and replace it with the clicked number</li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </br>
+                <li>When clicking an operator :
+                    <ul>
+                        <li>if an operator was the last thing input
+                            <ul>
+                                <li>then the new operator replaces the old one</li>
+                            </ul>
+                        </li> 
+                        <li>if no numbers have been input before the operator</li>
+                            <ul>
+                                <li>then it tells you that you can't do that</li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </li>
+                </br>
+                <li>When clicking "0":
+                    <ul>
+                        <li>if the "=" button was just pressed
+                            <ul>
+                                <li>then the number pressed replaces the calculation</li>
+                            </ul>
+                        </li>
+                        <li>0 cannot be placed after an operator
+                            <ul>
+                                <li>(otherwise I had a problem where I could input 00003 for example)</li>
+                            </ul>
+                        </li>
+                        <li>if there have been numbers input, and the user didn't type "0" after a decimal
+                            <ul>
+                                <li>then we remove the last char of the number and replace it with the clicked number</li>
+                            </ul>
+                        </li>
+                        <li>if there have been numbers input, and the only number on the screen is 0 (even if the user input 0)
+                            <ul>
+                                <li>then we remove the last char of the number and replace it with the clicked number</li>
+                            </ul>
+                        </li>
+                        <li>if 0 is the first number
+                            <ul>
+                                <li>other numbers being clicked replace</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                </br>
+                <li>When clicking "=":
+                    <ul>
+                        <li>if the user clicks "=" when nothing has been input
+                            <ul>
+                                <li>nothing happens</li>
+                            </ul>
+                        </li>
+                        <li>if an operator was the last thing input
+                            <ul>
+                                <li>then an error message pops up</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                </br>
+                <li>When clicking ".":
+                    <ul>
+                        <li>if the ArrayList "numbers" is empty
+                            <ul>
+                                <li>then it makes the first value 0.0</li>
+                            </ul>
+                        </li>
+                        <li>if the last element was an operator
+                            <ul>
+                                <li>it adds 0.0 for the next number</li>
+                            </ul>
+                        </li>
+                        <li>if the last number already has a decimal
+                            <ul>
+                                <li>then it sends an error message</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                </br>
+                <li>When clicking "C":
+                    <ul>
+                        <li>if nothing is input
+                            <ul>
+                                <li>nothing happens</li>
+                            </ul>
+                        </li>
+                        <li>otherwise removes digits, one digit at a time</li>
+                    </ul>
+                </li>
+            </ul>
+            (Brackets, S and R buttons don't work cus I didn't need them, and I didn't have time left to finish implementing them, so they are incomplete.)
+            </section>
+        </article>
+    
+    
+    
+    
 </body>
 <p>
 </p>
